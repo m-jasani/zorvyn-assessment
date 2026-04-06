@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# BitBank — Finance Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A clean, interactive personal finance dashboard built with React, Zustand, and Tailwind CSS.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Getting Started
 
-### `npm start`
+### Prerequisites
+- Node.js v18+
+- npm or yarn
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+# Clone the repo
+git clone <your-repo-url>
 
-### `npm test`
+# Install dependencies
+npm install
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Start the development server
+npm start
+```
 
-### `npm run build`
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🗂 Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+src/
+├── components/         # Reusable UI components
+│   ├── Layout.jsx      # App shell with sidebar + navbar
+│   ├── Navbar.jsx      # Top navigation bar
+│   ├── Sidebar.jsx     # Collapsible navigation sidebar
+│   ├── Linechart.js    # Area chart — balance over time
+│   ├── Piechart.jsx    # Donut chart — spending by category
+│   ├── Summarycards.jsx# Income / Expenses / Balance cards
+│   └── ObservationCard.jsx
+├── pages/
+│   ├── Dashboard.jsx   # Overview page
+│   ├── Transactions.jsx# Transaction table with CRUD
+│   └── Insights.jsx    # Financial insights & trends
+├── store/
+│   └── usestore.js     # Zustand global state
+└── data/
+    └── Mockdata.js     # Static seed transaction data
+```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ✨ Features
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Dashboard
+- Summary cards showing **Total Balance**, **Monthly Income**, and **Monthly Expenses** — all derived live from the transaction store
+- **Balance Trend** area chart — running balance plotted over time
+- **Spending Breakdown** donut chart — expenses grouped by category
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Transactions
+- Paginated transaction table (5 per page)
+- **Filter** by type (Income / Expense)
+- **Sort** by date (Recent / Oldest)
+- **Search** globally from the navbar — filters across all views simultaneously
+- Empty state messaging when no results match
+- **Admin** can Add, Edit, and Delete transactions via floating button + modal
+- **Viewer** sees read-only data
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Insights
+- Balance trend chart derived from real transaction data (not hardcoded)
+- Dynamically computed **top spending category** with percentage
+- Upcoming payments panel
+- Observation cards: Spending alerts, dividend update, subscription audit
 
-## Learn More
+### Role-Based UI
+Roles are toggled via the Admin / Viewer button in the navbar:
+- **Admin**: Full CRUD — can add, edit, delete transactions
+- **Viewer**: Read-only mode — action buttons hidden
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Dark / Light Mode
+Toggle between dark and light themes from the navbar. Theme preference is persisted in localStorage.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🛠 Tech Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Layer | Choice |
+|---|---|
+| Framework | React 18 |
+| State | Zustand with `persist` middleware |
+| Styling | Tailwind CSS |
+| Charts | Recharts |
+| Routing | React Router v6 |
+| Icons | Lucide React |
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 💾 Data Persistence
 
-### Making a Progressive Web App
+Zustand's `persist` middleware is used to save transactions, theme, and role to `localStorage` under the key `bitbank-store`. Data survives page refreshes. To reset, clear localStorage in DevTools.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 📱 Responsiveness
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Sidebar collapses off-screen on mobile and is toggled via a hamburger menu
+- Transaction table scrolls horizontally on small screens
+- Summary cards and chart grid stack vertically on mobile
+- Admin/Viewer toggle hidden on very small screens (role defaults to last set value via persisted store)
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🧩 Design Decisions
 
-### `npm run build` fails to minify
+- **Zustand over Context**: Simpler boilerplate, built-in devtools support, and the `persist` plugin makes localStorage integration trivial
+- **Mock data as initial state**: `mockTransactions` seeds the Zustand store on first load; subsequent loads use persisted state — so adds/deletes survive refresh
+- **Global search**: The search query in the navbar filters across the transaction table, line chart, pie chart, and summary cards simultaneously, giving a coherent cross-view filter experience
+- **Role simulation on frontend only**: No backend — roles toggle in the navbar and gate UI elements (add/edit/delete buttons). This meets the assignment's RBAC simulation requirement
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🎁 Optional Enhancements Implemented
+
+- ✅ Dark mode with persistence
+- ✅ LocalStorage persistence via Zustand persist
+- ✅ Smooth animations and hover transitions
+- ✅ Empty state handling across all views
+- ✅ Mobile-responsive layout with hamburger sidebar
