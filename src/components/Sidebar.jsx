@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { LayoutGrid, ReceiptText, LineChart, Settings } from "lucide-react";
+import { LayoutGrid, ReceiptText, LineChart } from "lucide-react";
 import useStore from "../store/usestore"; // Ensure this path matches your file structure
 
 const Sidebar = () => {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Trash2, Edit3, Plus, ChevronLeft, ChevronRight } from "lucide-react";
-import { mockTransactions } from "../data/Mockdata";
 import useStore from "../store/usestore";
 
 const TransactionTable = () => {
